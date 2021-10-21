@@ -3,24 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
     /**
-     * Handle an authentication attempt.
-     *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\LoginRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function authenticate(Request $request)
+    public function authenticate(LoginRequest $request)
     {
-        $credentials = $request->validate([
-            'username' => ['required', 'string', 'max:255', 'alpha_dash'],
-            'password' => ['required'],
-        ]);
-
-        if (Auth::attempt($credentials, (bool)$request->only('remember'))) {
+        if (Auth::attempt($request->only(['username', 'password']), $request->boolean('remember'))) {
             $request->session()->regenerate();
 
             return redirect()->intended('dashboard');
@@ -32,8 +26,6 @@ class AuthController extends Controller
     }
 
     /**
-     * Log the user out of the application.
-     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
