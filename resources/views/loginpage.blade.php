@@ -12,8 +12,8 @@
                         <h4>{{ __('AW Ticket Platform') }}</h4>
                         <div class="col-12">
                             <label>{{ __('Username') }}</label>
-                            <input type="text" name="username" class="form-control" placeholder="{{ __('Username') }}"
-                                required>
+                            <input type="text" name="user_name" class="form-control" placeholder="{{ __('Username') }}"
+                                value="{{ old('user_name') }}" required>
                         </div>
                         <div class="col-12">
                             <label>{{ __('Password') }}</label>

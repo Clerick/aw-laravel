@@ -14,14 +14,14 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        if (Auth::attempt($request->only(['username', 'password']), $request->boolean('remember'))) {
+        if (Auth::attempt($request->only(['user_name', 'password']), $request->boolean('remember'))) {
             $request->session()->regenerate();
 
             return redirect()->intended(config('routes.dashboard'));
         }
 
-        return back()->withErrors([
-            'username' => __('Auth failed. Please check your credentials and try again.'),
+        return back()->withInput()->withErrors([
+            'user_name' => __('Auth failed. Please check your credentials and try again.'),
         ]);
     }
 

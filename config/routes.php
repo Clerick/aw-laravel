@@ -6,5 +6,8 @@ return [
     'auth' => [
         'login' => 'auth.login',
         'logout' => 'auth.logout'
+    ],
+    'submit' => [
+        'ticket' => 'submit.ticket'
     ]
 ];
