@@ -12,12 +12,12 @@ class AuthController extends Controller
      * @param  App\Http\Requests\LoginRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function authenticate(LoginRequest $request)
+    public function login(LoginRequest $request)
     {
         if (Auth::attempt($request->only(['username', 'password']), $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            return redirect()->intended('dashboard');
+            return redirect()->intended(config('routes.dashboard'));
         }
 
         return back()->withErrors([

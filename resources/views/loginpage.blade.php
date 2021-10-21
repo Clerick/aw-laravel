@@ -7,7 +7,7 @@
         <div class="row justify-content-center align-items-center">
             <div class="col-md-4">
                 <div class="login-form bg-light mt-4 p-4">
-                    <form action="{{ route('auth.login') }}" method="POST" class="row g-3">
+                    <form action="{{ route(config('routes.auth.login')) }}" method="POST" class="row g-3">
                         @csrf
                         <h4>{{ __('AW Ticket Platform') }}</h4>
                         <div class="col-12">

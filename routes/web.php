@@ -15,15 +15,18 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
-Route::get('/', function () {
-    return view('loginpage');
-})->name('loginpage')->middleware('guest');
+Route::middleware(['guest'])->group(function () {
+    Route::get('/', function () {
+        return view('loginpage');
+    })->name(config('routes.loginpage'));
 
-Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.login');
-Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+    Route::post('/login', [AuthController::class, 'login'])->name(config('routes.auth.login'));
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function() {
         return view('dashboard');
-    })->name('dashboard');
+    })->name(config('routes.dashboard'));
+    
+    Route::get('/logout', [AuthController::class, 'logout'])->name(config('routes.auth.logout'));
 });
