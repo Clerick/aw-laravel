@@ -24,12 +24,7 @@ Route::middleware(['guest'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', function() {
-        return view('dashboard');
-    })->name(config('routes.dashboard'));
+    Route::get('/dashboard', [DashboardController::class, 'showTicketForm'])->name(config('routes.dashboard'));
     Route::get('/logout', [AuthController::class, 'logout'])->name(config('routes.auth.logout'));
-
-    Route::post('/sendticket', [TicketController::class, 'submit'])->name(config('routes.submit.ticket'));
-
-   
+    Route::post('/ticket/create', [TicketController::class, 'create'])->name(config('routes.submit.ticket'));
 });

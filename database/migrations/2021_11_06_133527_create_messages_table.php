@@ -3,8 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Message;
 
-class CreateTicketTable extends Migration
+class CreateMessagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +14,11 @@ class CreateTicketTable extends Migration
      */
     public function up()
     {
-        Schema::create('tickets', function (Blueprint $table) {
+        Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->string('uid')->unique()->comment('Unique id');
-            $table->string('subject')->comment('Ticket subject');
-            $table->string('user_name')->comment('User name');
-            $table->string('user_email')->comment('User email');
+            $table->foreignId('ticket_id')->constrained('tickets')->onDelete('cascade');
+            $table->enum('author', Message::AUTHORS)->comment('Message author');
+            $table->mediumText('content')->comment('Message content');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateTicketTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ticket');
+        Schema::dropIfExists('messages');
     }
 }

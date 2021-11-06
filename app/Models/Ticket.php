@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use App\Models\Message;
 
 class Ticket extends Model
 {
@@ -21,5 +22,10 @@ class Ticket extends Model
         static::creating(function ($ticket) {
             $ticket->uid = Str::uuid();
         });
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
     }
 }

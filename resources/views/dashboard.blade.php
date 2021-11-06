@@ -18,19 +18,34 @@
                         @csrf
                         <h4>{{ __('Please fill out the form') }}</h4>
                         <div class="col-6">
-                            <label>{{ __('Username') }}</label>
-                            <input type="text" name="user_name" class="form-control"
+                            <label for="userName">{{ __('Username') }}</label>
+                            <input type="text" name="user_name" id="userName"  class="form-control"
                                 placeholder="{{ __('Your username') }}" value="{{ old('user_name') }}" required>
                         </div>
                         <div class="col-6">
-                            <label>{{ __('Email') }}</label>
-                            <input type="text" name="user_email" class="form-control"
+                            <label for="userEmail">{{ __('Email') }}</label>
+                            <input type="email" name="user_email" id="userEmail" class="form-control"
                                 placeholder="{{ __('Your email') }}" value="{{ old('user_email') }}" required>
                         </div>
                         <div class="col-12">
-                            <label>{{ __('Subject') }}</label>
-                            <input type="text" name="subject" class="form-control" placeholder="{{ __('Subject') }}"
+                            <label for="subject">{{ __('Subject') }}</label>
+                            <input type="text" name="subject" id="subject" class="form-control" placeholder="{{ __('Subject') }}"
                                 value="{{ old('subject') }}" required>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="author">{{ __('Author') }}</label>
+                            <select name="author" id="author" class="form-select" required>
+                                <option value="">{{ __('Please, Select The Author') }}</option>
+                                @foreach ($messageAuthors as $messageAuthor)
+                                    <option value="{{ $messageAuthor }}" {{ old('author') == $messageAuthor ? "selected" : "" }}>{{ ucfirst(__($messageAuthor)) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="content">{{ __('Content') }}</label>
+                            <textarea class="form-control" name="content" id="content" rows="7" required>{{ old('content') }}</textarea>
                         </div>
 
                         <div class="col-12">
