@@ -16,7 +16,7 @@
                 <div class="ticket-form bg-light mt-4 p-4">
                     <form action="{{ route(config('routes.submit.ticket')) }}" method="POST" class="row g-3">
                         @csrf
-                        <h4>{{ __('Please fill out the form') }}</h4>
+                        <h4>{{ __('Please Fill Out The Form') }}</h4>
                         <div class="col-6">
                             <label for="userName">{{ __('Username') }}</label>
                             <input type="text" name="user_name" id="userName"  class="form-control"
@@ -32,7 +32,6 @@
                             <input type="text" name="subject" id="subject" class="form-control" placeholder="{{ __('Subject') }}"
                                 value="{{ old('subject') }}" required>
                         </div>
-
                         <div class="col-12">
                             <label for="author">{{ __('Author') }}</label>
                             <select name="author" id="author" class="form-select" required>
@@ -42,21 +41,33 @@
                                 @endforeach
                             </select>
                         </div>
-
                         <div class="col-12">
                             <label for="content">{{ __('Content') }}</label>
                             <textarea class="form-control" name="content" id="content" rows="7" required>{{ old('content') }}</textarea>
                         </div>
-
+                        <div class="col-6">
+                            <label for="ftpLogin">{{ __('FTP Login For Your Server') }}</label>
+                            <input type="text" name="ftp_login" id="ftpLogin"  class="form-control"
+                                placeholder="{{ __('FTP Login') }}" value="{{ old('ftp_login') }}">
+                        </div>
+                        <div class="col-6">
+                            <label for="ftpPassowrd">{{ __('FTP Password For Your Server') }}</label>
+                            <input type="password" name="ftp_password" id="ftpPassowrd" class="form-control"
+                                placeholder="{{ __('FTP password') }}">
+                        </div>
                         <div class="col-12">
                             <button type="submit" class="btn btn-dark float-end">{{ __('Submit') }}</button>
                         </div>
 
-                        @error('saveException')
+                        @if ($errors->any())
                             <div class="alert alert-danger" role="alert">
-                                <p>{{ $message }}</p>
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <p>{{ $error }}</p>
+                                    @endforeach
+                                </ul>
                             </div>
-                        @enderror
+                        @endif
                     </form>
                 </div>
             </div>

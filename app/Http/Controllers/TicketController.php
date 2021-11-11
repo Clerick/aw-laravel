@@ -20,9 +20,10 @@ class TicketController extends Controller
 
         try {
             $ticket = Ticket::create($request->all());
-            $ticket->messages()->create($request->all());
+            $message = $ticket->messages()->create($request->all());
+            $message->serverCredentials()->create($request->all());
             DB::commit();
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
 
@@ -31,6 +32,6 @@ class TicketController extends Controller
             ]);
         }
 
-        return 'success';
+        return view('dashboard.ticket_submit_success', ['uid' => $ticket->uid]);
     }
 }
