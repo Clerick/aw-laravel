@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Models\Ticket;
 use App\Http\Requests\CreateTicketRequest;
+use Symfony\Component\HttpFoundation\Response;
 
 class TicketController extends Controller
 {
     /**
      * @param CreateTicketRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return mixed
      */
     public function create(CreateTicketRequest $request)
     {
@@ -21,17 +21,46 @@ class TicketController extends Controller
         try {
             $ticket = Ticket::create($request->all());
             $message = $ticket->messages()->create($request->all());
-            $message->serverCredentials()->create($request->all());
+
+            if ($request->hasCredentials()) {
+                $message->serverCredentials()->create($request->all());
+            }
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
 
-            return back()->withInput()->withErrors([
-                'saveException' => __('Sorry, but something went wrong while saving your request. Please try again later.'),
-            ]);
+            return $this->getSaveErrorResponse($request->wantsJson());
         }
 
-        return view('dashboard.ticket_submit_success', ['uid' => $ticket->uid]);
+        return $this->getSuccessResponse($ticket->uid, $request->wantsJson());
+    }
+
+    /**
+     * @param boolean $isWantsJson
+     * @return Response|\Illuminate\Contracts\Routing\ResponseFactory
+     */
+    private function getSaveErrorResponse(bool $isWantsJson)
+    {
+        $saveErrorData = [
+            'saveError' => __('Sorry, but something went wrong while saving your request. Please try again later.')
+        ];
+        
+        return $isWantsJson 
+            ? response()->json($saveErrorData, Response::HTTP_INTERNAL_SERVER_ERROR) 
+            : back()->withInput()->withErrors($saveErrorData);
+    }
+
+    /**
+     * @param string $uid
+     * @param boolean $isWantsJson
+     * @return Response|\Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
+    private function getSuccessResponse(string $uid, bool $isWantsJson = false)
+    {
+        return $isWantsJson
+            ? response()->json(['message' => 'success', 'uid' => $uid], Response::HTTP_OK)
+            : view('dashboard.ticket_submit_success', ['uid' => $uid]);
     }
 }
