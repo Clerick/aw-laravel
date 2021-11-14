@@ -17,6 +17,10 @@ class TicketController extends Controller
      */
     public function create(CreateTicketRequest $request)
     {
+        // Думал над тем, чтобы создать два отельных контроллера (под web и api)
+        // и вынести логику сохранения в отдельных класс что-то типа SaveTicketHandler
+        // но решил, что контроллеры в основном отличаются только выдачей респонса
+        // поэтому использовал один контроллер и под web, и под api
         DB::beginTransaction();
 
         try {
