@@ -30,7 +30,7 @@ class CreateTicketRequest extends FormRequest
 
     public function failedValidation(Validator $validator): void
     {
-        if (request()->isJson()) {
+        if (request()->wantsJson()) {
             throw new HttpResponseException(response()->json([
                 'message' => 'Validation Exception',
                 'data' => $validator->errors()

@@ -10,7 +10,7 @@ class AuthController extends Controller
 {
     /**
      * @param  App\Http\Requests\LoginRequest $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
     public function login(LoginRequest $request)
     {
@@ -27,7 +27,7 @@ class AuthController extends Controller
 
     /**
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
     public function logout(Request $request)
     {

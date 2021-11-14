@@ -20,6 +20,10 @@ class ServerCredentials extends Model
         'ftp_password' => 'encrypted'
     ];
 
+    public $hidden = [
+        'ftp_password'
+    ];
+
     public $timestamps = false;
 
     public function message()
