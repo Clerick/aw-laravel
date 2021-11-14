@@ -29,9 +29,9 @@ class TicketController extends Controller
 
             TicketCreated::dispatch($ticket);
             DB::commit();
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($exception->getMessage());
 
             return $this->getSaveErrorResponse($request->wantsJson());
         }

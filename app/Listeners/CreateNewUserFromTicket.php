@@ -5,14 +5,14 @@ namespace App\Listeners;
 use App\Events\TicketCreated;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\TicketCreated as TicketCreatedMail;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
-class SendTicketConfirmationEmail implements ShouldQueue
+class CreateNewUserFromTicket implements ShouldQueue
 {
     use InteractsWithQueue;
 
+    public const CREATE_USER_API_URL = 'api/users';
     public $afterCommit = true;
     public $tries = 5;
 
@@ -35,11 +35,15 @@ class SendTicketConfirmationEmail implements ShouldQueue
     public function handle(TicketCreated $event)
     {
         $ticket = $event->ticket;
-        Mail::to($ticket->user_email)->send(new TicketCreatedMail($ticket));
+        $apiResponse = Http::post(config('app.api_url') . self::CREATE_USER_API_URL,  $ticket->toArray());
+        Log::info(
+            __('Create new user api response for the ticket with uid:') . ' ' . $ticket->uid . PHP_EOL
+            . print_r($apiResponse->json(), true)
+        );
     }
 
     public function failed(TicketCreated $event, \Throwable $exception)
     {
-        Log::error(__('Send ticket confirmation email queue failed:') . ' ' . $exception->getMessage());
+        Log::error(__('Create user queue failed:') . ' ' . $exception->getMessage());
     }
 }
