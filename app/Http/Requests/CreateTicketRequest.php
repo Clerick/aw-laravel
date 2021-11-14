@@ -19,7 +19,7 @@ class CreateTicketRequest extends FormRequest
     {
         return [
             'user_name' => ['required', 'string', 'min:4', 'max:255', 'alpha_dash'],
-            'user_email' => ['required', 'string', 'min:6', 'max:255', 'email'],
+            'user_email' => ['required', 'string', 'max:255', 'email'],
             'subject' => ['required', 'string', 'max:255'],
             'author' => ['required', 'string', 'in:' . implode(',', Message::AUTHORS)],
             'content' => ['required', 'string'],

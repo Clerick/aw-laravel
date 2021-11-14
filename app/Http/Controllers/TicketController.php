@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Ticket;
 use App\Http\Requests\CreateTicketRequest;
 use Symfony\Component\HttpFoundation\Response;
+use App\Events\TicketCreated;
 
 class TicketController extends Controller
 {
@@ -26,6 +27,7 @@ class TicketController extends Controller
                 $message->serverCredentials()->create($request->all());
             }
 
+            TicketCreated::dispatch($ticket);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -60,7 +62,7 @@ class TicketController extends Controller
     private function getSuccessResponse(string $uid, bool $isWantsJson = false)
     {
         return $isWantsJson
-            ? response()->json(['message' => 'success', 'uid' => $uid], Response::HTTP_OK)
+            ? response()->json(['message' => 'success', 'uid' => $uid], Response::HTTP_CREATED)
             : view('dashboard.ticket_submit_success', ['uid' => $uid]);
     }
 }
