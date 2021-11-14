@@ -22,7 +22,7 @@ class CreateTicketRequest extends FormRequest
             'user_email' => ['required', 'string', 'max:255', 'email'],
             'subject' => ['required', 'string', 'max:255'],
             'author' => ['required', 'string', 'in:' . implode(',', Message::AUTHORS)],
-            'content' => ['required', 'string'],
+            'content' => ['required', 'string', 'max:5592404'],
             'ftp_login' => ['nullable', 'string', 'max:255', 'required_with:ftp_password'],
             'ftp_password' => ['nullable', 'string', 'max:255', 'required_with:ftp_login']
         ];
