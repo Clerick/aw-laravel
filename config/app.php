@@ -165,6 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
+        ConsoleTVs\Profanity\ProfanityServiceProvider::class,
 
         /*
          * Application Service Providers...
